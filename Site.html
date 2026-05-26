@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TC NIGHT SQUAD</title>
+
+<style>
+
+:root{
+--bg:#050816;
+--card:#111827;
+--card2:#0f172a;
+--text:white;
+--accent:#00bfff;
+--sidebar:rgba(10,15,30,0.92);
+}
+
+body.light{
+--bg:#e7eefc;
+--card:white;
+--card2:#dfe7ff;
+--text:black;
+--accent:#0066ff;
+--sidebar:rgba(255,255,255,0.95);
+}
+
+body.red{
+--bg:#120404;
+--card:#1e0909;
+--card2:#2a0c0c;
+--text:white;
+--accent:#ff0033;
+--sidebar:rgba(30,0,0,0.92);
+}
+
+body{
+margin:0;
+padding:0;
+background:var(--bg);
+color:var(--text);
+font-family:Arial,sans-serif;
+overflow:hidden;
+transition:0.3s;
+}
+
+.background-glow{
+position:fixed;
+width:900px;
+height:900px;
+background:var(--accent);
+filter:blur(250px);
+opacity:0.12;
+top:-300px;
+left:-200px;
+z-index:-1;
+}
+
+.sidebar{
+position:fixed;
+left:0;
+top:0;
+width:240px;
+height:100%;
+overflow:auto;
+background:var(--sidebar);
+border-right:1px solid var(--accent);
+backdrop-filter:blur(15px);
+}
+
+.sidebar h2{
+color:var(--accent);
+text-align:center;
+margin-top:30px;
+font-size:28px;
+}
+
+.sidebar a{
+display:block;
+padding:15px 20px;
+color:var(--text);
+text-decoration:none;
+cursor:pointer;
+transition:0.2s;
+}
+
+.sidebar a:hover{
+background:var(--accent);
+color:black;
+}
+
+main{
+margin-left:240px;
+height:100vh;
+overflow:auto;
+}
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:25px 40px;
+border-bottom:1px solid var(--accent);
+background:rgba(8,12,24,0.7);
+position:sticky;
+top:0;
+z-index:100;
+backdrop-filter:blur(15px);
+}
+
+.logo{
+font-size:32px;
+color:var(--accent);
+font-weight:bold;
+text-shadow:0 0 20px var(--accent);
+}
+
+.zoom-controls{
+display:flex;
+gap:10px;
+}
+
+.zoom-controls button{
+padding:10px 15px;
+border:none;
+border-radius:10px;
+background:var(--accent);
+cursor:pointer;
+font-weight:bold;
+}
+
+.page{
+display:none;
+padding:30px;
+}
+
+.active-page{
+display:block;
+}
+
+.hero{
+text-align:center;
+padding:80px 20px;
+}
+
+.hero h1{
+font-size:70px;
+color:var(--accent);
+text-shadow:0 0 30px var(--accent);
+}
+
+.hero p{
+font-size:22px;
+opacity:0.8;
+}
+
+.hero button{
+margin-top:30px;
+padding:18px 40px;
+border:none;
+border-radius:15px;
+background:var(--accent);
+color:black;
+font-size:18px;
+cursor:pointer;
+font-weight:bold;
+box-shadow:0 0 20px var(--accent);
+}
+
+.stats{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:25px;
+padding:20px;
+}
+
+.card{
+width:220px;
+background:var(--card);
+border:1px solid var(--accent);
+border-radius:20px;
+padding:30px;
+text-align:center;
+box-shadow:0 0 20px rgba(0,0,0,0.3);
+}
+
+.card h2{
+color:var(--accent);
+font-size:40px;
+}
+
+.section-title{
+text-align:center;
+color:var(--accent);
+font-size:45px;
+margin-top:20px;
+}
+
+.member-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+padding:20px;
+}
+
+.member-card{
+background:var(--card);
+border:1px solid var(--accent);
+border-radius:20px;
+padding:25px;
+text-align:center;
+transition:0.2s;
+}
+
+.member-card:hover{
+transform:translateY(-5px);
+box-shadow:0 0 25px var(--accent);
+}
+
+.member-card img{
+width:90px;
+height:90px;
+border-radius:50%;
+border:3px solid var(--accent);
+}
+
+.member-card button,
+.panel button{
+margin-top:10px;
+padding:10px 15px;
+border:none;
+border-radius:12px;
+background:var(--accent);
+color:black;
+cursor:pointer;
+font-weight:bold;
+}
+
+.panel{
+background:var(--card);
+border:1px solid var(--accent);
+padding:20px;
+border-radius:20px;
+margin:20px;
+}
+
+.panel input,
+.chat-input{
+width:100%;
+padding:12px;
+margin-top:10px;
+background:var(--card2);
+border:none;
+border-radius:12px;
+color:var(--text);
+box-sizing:border-box;
+}
+
+.chat-box{
+width:90%;
+margin:auto;
+background:var(--card);
+border:1px solid var(--accent);
+border-radius:20px;
+padding:20px;
+height:400px;
+overflow:auto;
+}
+
+.chat-message{
+margin:15px 0;
+padding:12px;
+background:var(--card2);
+border-radius:12px;
+}
+
+@media(max-width:768px){
+
+.sidebar{
+width:75px;
+}
+
+.sidebar h2{
+font-size:16px;
+}
+
+.sidebar a{
+font-size:10px;
+padding:10px 5px;
+text-align:center;
+}
+
+main{
+margin-left:75px;
+}
+
+.hero h1{
+font-size:34px;
+}
+
+.stats{
+gap:10px;
+}
+
+.card{
+width:130px;
+padding:15px;
+}
+
+.member-grid{
+grid-template-columns:1fr;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="background-glow"></div>
+
+<div class="sidebar">
+
+<h2>TCNS</h2>
+
+<a onclick="showPage('dashboard')">🏠 DASHBOARD</a>
+<a onclick="showPage('members')">👥 MEMBERS</a>
+<a onclick="showPage('missions')">🛰 MISSIONS</a>
+<a onclick="showPage('games')">🎮 GAMES</a>
+<a onclick="showPage('chat')">💬 LIVE CHAT</a>
+<a onclick="showPage('servers')">🌐 SERVERS</a>
+<a onclick="showPage('files')">📁 FILES</a>
+<a onclick="showPage('awards')">🏆 AWARDS</a>
+<a onclick="showPage('settings')">⚙ SETTINGS</a>
+
+<hr>
+
+<a href="https://s.team/chat/niBedXU5">🔥 STEAM</a>
+<a href="https://youtube.com/@trspy3412">▶ YOUTUBE</a>
+<a href="https://ig.me/j/AbaRUb2ak9WtM9vr/">📸 INSTAGRAM</a>
+
+</div>
+
+<main>
+
+<header>
+
+<div class="logo">
+TC NIGHT SQUAD
+</div>
+
+<div class="zoom-controls">
+
+<button onclick="zoomIn()">+</button>
+<button onclick="zoomOut()">-</button>
+
+</div>
+
+</header>
+
+<div id="dashboard" class="page active-page">
+
+<section class="hero">
+
+<h1>WELCOME TO THE NIGHT</h1>
+
+<p>Elite gaming squad • Brotherhood • Operations</p>
+
+<button onclick="window.open('https://s.team/chat/niBedXU5')">
+JOIN THE SQUAD
+</button>
+
+</section>
+
+<section class="stats">
+
+<div class="card">
+<h2 id="onlineCount">25</h2>
+<p>ONLINE MEMBERS</p>
+</div>
+
+<div class="card">
+<h2>2019</h2>
+<p>CLAN CREATED</p>
+</div>
+
+<div class="card">
+<h2 id="steamStatus">LOADING</h2>
+<p>STEAM STATUS</p>
+</div>
+
+</section>
+
+</div>
+
+<div id="members" class="page">
+
+<h2 class="section-title">
+MEMBERS
+</h2>
+
+<div class="panel">
+
+<input id="memberName" placeholder="Üye adı">
+<input id="memberRole" placeholder="Rütbe">
+
+<button onclick="addMember()">
+ÜYE EKLE
+</button>
+
+</div>
+
+<div class="member-grid" id="memberGrid"></div>
+
+</div>
+
+<div id="missions" class="page">
+
+<h2 class="section-title">
+MISSIONS
+</h2>
+
+<div class="panel">
+
+<input id="missionInput" placeholder="Görev adı">
+
+<button onclick="addMission()">
+GÖREV EKLE
+</button>
+
+</div>
+
+<div id="missionList"></div>
+
+</div>
+
+<div id="games" class="page">
+
+<h2 class="section-title">
+GAMES
+</h2>
+
+<div class="panel">
+
+<input id="gameInput" placeholder="Oyun adı">
+
+<button onclick="addGame()">
+OYUN EKLE
+</button>
+
+</div>
+
+<div id="gameList"></div>
+
+</div>
+
+<div id="chat" class="page">
+
+<h2 class="section-title">
+LIVE CHAT
+</h2>
+
+<div class="chat-box" id="chatBox"></div>
+
+<div class="panel">
+
+<input class="chat-input" id="chatInput" placeholder="Mesaj yaz">
+
+<button onclick="sendMessage()">
+GÖNDER
+</button>
+
+<input type="file">
+
+</div>
+
+</div>
+
+<div id="servers" class="page">
+
+<h2 class="section-title">
+SERVERS
+</h2>
+
+<div class="panel">
+
+<input id="serverName" placeholder="Server adı">
+<input id="serverIp" placeholder="Server IP">
+
+<button onclick="addServer()">
+SERVER EKLE
+</button>
+
+</div>
+
+<div id="serverList"></div>
+
+</div>
+
+<div id="files" class="page">
+
+<h2 class="section-title">
+FILES
+</h2>
+
+<div class="panel">
+
+<input id="fileInput" placeholder="Dosya adı">
+
+<button onclick="addFile()">
+DOSYA EKLE
+</button>
+
+</div>
+
+<div id="fileList"></div>
+
+</div>
+
+<div id="awards" class="page">
+
+<h2 class="section-title">
+AWARDS
+</h2>
+
+<div class="panel">
+
+<input id="awardUser" placeholder="Kullanıcı">
+<input id="awardName" placeholder="Ödül">
+
+<button onclick="addAward()">
+ÖDÜL EKLE
+</button>
+
+</div>
+
+<div id="awardList"></div>
+
+</div>
+
+<div id="settings" class="page">
+
+<h2 class="section-title">
+SETTINGS
+</h2>
+
+<div class="panel">
+
+<button onclick="setBlueTheme()">
+MAVİ TEMA
+</button>
+
+<button onclick="setRedTheme()">
+KIRMIZI TEMA
+</button>
+
+<button onclick="setLightTheme()">
+BEYAZ TEMA
+</button>
+
+</div>
+
+</div>
+
+</main>
+
+<script>
+
+let zoomLevel =
+localStorage.getItem("zoomLevel") || 100;
+
+document.body.style.zoom =
+zoomLevel + "%";
+
+function zoomIn(){
+
+zoomLevel =
+parseInt(zoomLevel) + 10;
+
+document.body.style.zoom =
+zoomLevel + "%";
+
+localStorage.setItem(
+"zoomLevel",
+zoomLevel
+);
+
+}
+
+function zoomOut(){
+
+zoomLevel =
+parseInt(zoomLevel) - 10;
+
+document.body.style.zoom =
+zoomLevel + "%";
+
+localStorage.setItem(
+"zoomLevel",
+zoomLevel
+);
+
+}
+
+function showPage(pageId){
+
+document.querySelectorAll(".page")
+.forEach(page => {
+
+page.classList.remove("active-page");
+
+});
+
+document.getElementById(pageId)
+.classList.add("active-page");
+
+}
+
+function setBlueTheme(){
+
+document.body.className = "";
+
+localStorage.setItem("theme","blue");
+
+}
+
+function setRedTheme(){
+
+document.body.className = "red";
+
+localStorage.setItem("theme","red");
+
+}
+
+function setLightTheme(){
+
+document.body.className = "light";
+
+localStorage.setItem("theme","light");
+
+}
+
+let savedTheme =
+localStorage.getItem("theme");
+
+if(savedTheme === "red"){
+
+document.body.classList.add("red");
+
+}
+
+if(savedTheme === "light"){
+
+document.body.classList.add("light");
+
+}
+
+let members =
+JSON.parse(
+localStorage.getItem("members")
+) || [];
+
+function saveMembers(){
+
+localStorage.setItem(
+"members",
+JSON.stringify(members)
+);
+
+}
+
+async function loadSteamMembers(){
+
+try{
+
+const response =
+await fetch(
+"http://127.0.0.1:3000/members"
+);
+
+const steamMembers =
+await response.json();
+
+const grid =
+document.getElementById("memberGrid");
+
+grid.innerHTML = "";
+
+steamMembers.forEach(member => {
+
+let status =
+"OFFLINE";
+
+if(member.personastate === 1){
+
+status = "ONLINE";
+
+}
+
+if(member.gameextrainfo){
+
+status =
+"PLAYING " +
+member.gameextrainfo;
+
+}
+
+document.getElementById(
+"steamStatus"
+).innerText = status;
+
+grid.innerHTML += `
+
+<div class="member-card">
+
+<img src="${member.avatarfull}">
+
+<h3>${member.personaname}</h3>
+
+<p>${status}</p>
+
+<button onclick="window.open('${member.profileurl}')">
+
+STEAM PROFILE
+
+</button>
+
+</div>
+
+`;
+
+});
+
+members.forEach((member,index)=>{
+
+grid.innerHTML += `
+
+<div class="member-card">
+
+<img src="${member.avatar}">
+
+<h3>${member.name}</h3>
+
+<p>${member.role}</p>
+
+<button onclick="editMember(${index})">
+DÜZENLE
+</button>
+
+<button onclick="deleteMember(${index})">
+SİL
+</button>
+
+</div>
+
+`;
+
+});
+
+}catch(err){
+
+console.log(err);
+
+}
+
+}
+
+loadSteamMembers();
+
+setInterval(
+loadSteamMembers,
+10000
+);
+
+function addMember(){
+
+let name =
+document.getElementById("memberName").value;
+
+let role =
+document.getElementById("memberRole").value;
+
+members.push({
+
+name:name,
+role:role,
+avatar:"https://i.imgur.com/1X4E9bA.png"
+
+});
+
+saveMembers();
+
+loadSteamMembers();
+
+}
+
+function deleteMember(index){
+
+members.splice(index,1);
+
+saveMembers();
+
+loadSteamMembers();
+
+}
+
+function editMember(index){
+
+let newName =
+prompt("Yeni isim");
+
+let newRole =
+prompt("Yeni rütbe");
+
+if(newName){
+
+members[index].name =
+newName;
+
+}
+
+if(newRole){
+
+members[index].role =
+newRole;
+
+}
+
+saveMembers();
+
+loadSteamMembers();
+
+}
+
+let missions =
+JSON.parse(
+localStorage.getItem("missions")
+) || [];
+
+function saveMissions(){
+
+localStorage.setItem(
+"missions",
+JSON.stringify(missions)
+);
+
+}
+
+function renderMissions(){
+
+let html = "";
+
+missions.forEach((mission,index)=>{
+
+html += `
+
+<div class="panel">
+
+<h3>${mission}</h3>
+
+<button onclick="deleteMission(${index})">
+SİL
+</button>
+
+</div>
+
+`;
+
+});
+
+document.getElementById(
+"missionList"
+).innerHTML = html;
+
+}
+
+renderMissions();
+
+function addMission(){
+
+let value =
+document.getElementById("missionInput").value;
+
+missions.push(value);
+
+saveMissions();
+
+renderMissions();
+
+}
+
+function deleteMission(index){
+
+missions.splice(index,1);
+
+saveMissions();
+
+renderMissions();
+
+}
+
+let games =
+JSON.parse(
+localStorage.getItem("games")
+) || [];
+
+function saveGames(){
+
+localStorage.setItem(
+"games",
+JSON.stringify(games)
+);
+
+}
+
+function renderGames(){
+
+let html = "";
+
+games.forEach((game,index)=>{
+
+html += `
+
+<div class="panel">
+
+<h3>${game}</h3>
+
+<button onclick="deleteGame(${index})">
+SİL
+</button>
+
+</div>
+
+`;
+
+});
+
+document.getElementById(
+"gameList"
+).innerHTML = html;
+
+}
+
+renderGames();
+
+function addGame(){
+
+let value =
+document.getElementById("gameInput").value;
+
+games.push(value);
+
+saveGames();
+
+renderGames();
+
+}
+
+function deleteGame(index){
+
+games.splice(index,1);
+
+saveGames();
+
+renderGames();
+
+}
+
+let servers =
+JSON.parse(
+localStorage.getItem("servers")
+) || [];
+
+function saveServers(){
+
+localStorage.setItem(
+"servers",
+JSON.stringify(servers)
+);
+
+}
+
+function renderServers(){
+
+let html = "";
+
+servers.forEach((server,index)=>{
+
+html += `
+
+<div class="panel">
+
+<h3>${server.name}</h3>
+
+<p>${server.ip}</p>
+
+<button onclick="deleteServer(${index})">
+SİL
+</button>
+
+</div>
+
+`;
+
+});
+
+document.getElementById(
+"serverList"
+).innerHTML = html;
+
+}
+
+renderServers();
+
+function addServer(){
+
+let name =
+document.getElementById("serverName").value;
+
+let ip =
+document.getElementById("serverIp").value;
+
+servers.push({
+
+name:name,
+ip:ip
+
+});
+
+saveServers();
+
+renderServers();
+
+}
+
+function deleteServer(index){
+
+servers.splice(index,1);
+
+saveServers();
+
+renderServers();
+
+}
+
+let files =
+JSON.parse(
+localStorage.getItem("files")
+) || [];
+
+function saveFiles(){
+
+localStorage.setItem(
+"files",
+JSON.stringify(files)
+);
+
+}
+
+function renderFiles(){
+
+let html = "";
+
+files.forEach((file,index)=>{
+
+html += `
+
+<div class="panel">
+
+<h3>${file}</h3>
+
+<button onclick="deleteFile(${index})">
+SİL
+</button>
+
+</div>
+
+`;
+
+});
+
+document.getElementById(
+"fileList"
+).innerHTML = html;
+
+}
+
+renderFiles();
+
+function addFile(){
+
+let value =
+document.getElementById("fileInput").value;
+
+files.push(value);
+
+saveFiles();
+
+renderFiles();
+
+}
+
+function deleteFile(index){
+
+files.splice(index,1);
+
+saveFiles();
+
+renderFiles();
+
+}
+
+let awards =
+JSON.parse(
+localStorage.getItem("awards")
+) || [];
+
+function saveAwards(){
+
+localStorage.setItem(
+"awards",
+JSON.stringify(awards)
+);
+
+}
+
+function renderAwards(){
+
+let html = "";
+
+awards.forEach((award,index)=>{
+
+html += `
+
+<div class="panel">
+
+<h3>${award.user}</h3>
+
+<p>${award.name}</p>
+
+<button onclick="deleteAward(${index})">
+SİL
+</button>
+
+</div>
+
+`;
+
+});
+
+document.getElementById(
+"awardList"
+).innerHTML = html;
+
+}
+
+renderAwards();
+
+function addAward(){
+
+let user =
+document.getElementById("awardUser").value;
+
+let award =
+document.getElementById("awardName").value;
+
+awards.push({
+
+user:user,
+name:award
+
+});
+
+saveAwards();
+
+renderAwards();
+
+}
+
+function deleteAward(index){
+
+awards.splice(index,1);
+
+saveAwards();
+
+renderAwards();
+
+}
+
+let chatMessages =
+JSON.parse(
+localStorage.getItem("chatMessages")
+) || [];
+
+chatMessages =
+chatMessages.filter(msg => {
+
+let now = Date.now();
+
+return now - msg.time <
+30 * 24 * 60 * 60 * 1000;
+
+});
+
+function saveChat(){
+
+localStorage.setItem(
+"chatMessages",
+JSON.stringify(chatMessages)
+);
+
+}
+
+function renderChat(){
+
+let html = "";
+
+chatMessages.forEach(msg => {
+
+html += `
+
+<div class="chat-message">
+
+${msg.text}
+
+</div>
+
+`;
+
+});
+
+document.getElementById(
+"chatBox"
+).innerHTML = html;
+
+}
+
+renderChat();
+
+function sendMessage(){
+
+let input =
+document.getElementById("chatInput");
+
+chatMessages.push({
+
+text:"EMPEROR: " + input.value,
+time:Date.now()
+
+});
+
+saveChat();
+
+renderChat();
+
+input.value = "";
+
+}
+
+function randomOnlineCount(){
+
+let online =
+document.getElementById("onlineCount");
+
+let random =
+Math.floor(Math.random() * 6);
+
+online.innerText =
+20 + random;
+
+}
+
+setInterval(randomOnlineCount,3000);
+
+</script>
+
+</body>
+</html>
